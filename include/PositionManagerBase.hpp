@@ -70,7 +70,7 @@ class Pose
 
     Pose() {}
     Pose(const FrameId& parent, const FrameId& child, const Transform& tr) : 
-        _parent(parent), _child(child), _tr(tr), _childTime(-1), _parentTime(-1) {}
+        _parent(parent), _parentTime(-1), _child(child), _childTime(-1), _tr(tr) {}
     Pose(const Pose& pose) : 
         _parent(pose._parent), _parentTime(pose._parentTime),  _child(pose._child), _childTime(pose._childTime), _tr(pose._tr) {}
 
@@ -130,6 +130,8 @@ class Pose
 
         return oss.str();
     }
+
+    public:
 
     FrameId _parent;
     TimeUs _parentTime;
