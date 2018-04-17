@@ -1,12 +1,14 @@
 cmake_minimum_required (VERSION 3.0)
-set(TARGET_name pom-base)
-project (${TARGET_name} VERSION 0.1)
+project (pom-base VERSION 0.1)
+set(LIBRARY_NAME ${PROJECT_NAME})
 
 set(SOURCES src/PositionManagerBase.cpp)
 
-add_library(${TARGET_name} ${SOURCES})
-target_link_libraries(${TARGET_name} ${ENVIRE_LIBRARIES})
+add_library(${LIBRARY_NAME} ${SOURCES})
+target_link_libraries(${LIBRARY_NAME} ${ENVIRE_LIBRARIES})
 
-
+SET(DEPENDENCIES "envire_core")
+SET(HEADERS_DIR "include")
+configure_file(${CMAKE_SOURCE_DIR}/template.pc.in ${CMAKE_BINARY_DIR}/pkgconfig/${LIBRARY_NAME}.pc @ONLY) 
 
 
