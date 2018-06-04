@@ -8,7 +8,7 @@ set(SOURCES
     )
 
 add_library(${LIBRARY_NAME} ${SOURCES})
-target_link_libraries(${LIBRARY_NAME} ${ENVIRE_LIBRARIES})
+target_link_libraries(${LIBRARY_NAME} ${ENVIRE_LIBRARIES} ${urdfdom_LIBRARIES})
 
 SET(DEPENDENCIES "envire_core")
 SET(HEADERS_DIR "include")
