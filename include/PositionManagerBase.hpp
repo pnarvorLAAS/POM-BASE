@@ -5,7 +5,7 @@
 #include <sys/time.h>
 #include <string>
 
-#include <envire_core/graph/EnvireGraph.hpp>
+#include <infuse_envire/graph/EnvireGraph.hpp>
 
 namespace PositionManager
 {
