@@ -1,4 +1,4 @@
-#include "UrdfParser.hpp"
+#include <infuse_pom_base/UrdfParser.hpp>
 
 #include <fstream>
 #include <sstream>

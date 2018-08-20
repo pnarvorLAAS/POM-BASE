@@ -38,8 +38,8 @@ add_library(${PROJECT_NAME} SHARED ${SOURCES})
 set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${PROJECT_VERSION})
 
 set(HEADERS
-    include/PositionManagerBase.hpp
-    include/UrdfParser.hpp
+    include/infuse_pom_base/PositionManagerBase.hpp
+    include/infuse_pom_base/UrdfParser.hpp
 )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER "${HEADERS}")

@@ -6,7 +6,7 @@
 #include <thread>
 #include <mutex>
 
-#include <PositionManagerBase.hpp>
+#include <infuse_pom_base/PositionManagerBase.hpp>
 #include <urdf_parser/urdf_parser.h>
 
 namespace PositionManager

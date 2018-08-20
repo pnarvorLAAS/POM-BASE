@@ -1,4 +1,4 @@
-#include "PositionManagerBase.hpp"
+#include <infuse_pom_base/PositionManagerBase.hpp>
 
 using namespace PositionManager;
 
