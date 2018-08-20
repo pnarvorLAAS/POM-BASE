@@ -74,7 +74,6 @@ set(version_config "${generated_dir}/${PROJECT_NAME}ConfigVersion.cmake")
 set(project_config "${generated_dir}/${PROJECT_NAME}Config.cmake")
 set(pkgconfig_file "${generated_dir}/${PROJECT_NAME}.pc")
 set(TARGETS_EXPORT_NAME "${PROJECT_NAME}Targets")
-set(namespace "${PROJECT_NAME}::")
 #
 #
 # Include module with fuctions:
@@ -155,6 +154,5 @@ install(
 #   * <prefix>/lib/cmake/infuse_cdff_types/infuse_cdff_typesTargets.cmake
 install(
     EXPORT "${TARGETS_EXPORT_NAME}"
-    NAMESPACE "${namespace}"
     DESTINATION "${config_install_dir}"
 )
