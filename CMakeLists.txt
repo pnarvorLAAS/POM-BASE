@@ -7,6 +7,7 @@ cmake_minimum_required(VERSION 3.0)
 project(infuse_pom_base VERSION 0.1)
 
 set(CMAKE_CXX_STANDARD 11)
+set(PKG_DESCRIPTION "Base classe for Infuse Position Manager (PoM)")
 
 ###
 # Imports infuse_pom_base dependencies
@@ -14,14 +15,17 @@ set(CMAKE_CXX_STANDARD 11)
 find_package(PkgConfig REQUIRED)
 
 find_package(urdfdom REQUIRED)
-pkg_check_modules(ENVIRE REQUIRED infuse_envire)
+pkg_check_modules(infuse_envire REQUIRED infuse_envire)
 
 include_directories(
     include/
-    ${ENVIRE_INCLUDE_DIRS}
+    ${infuse_envire_INCLUDE_DIRS}
     ${urdfdom_INCLUDE_DIRS}
 )
-link_directories(${ENVIRE_LIBRARY_DIRS})
+link_directories(${infuse_envire_LIBRARY_DIRS})
+
+set(REQUIRED_COMPONENTS "urdfdom, infuse_envire")
+
 
 ####
 # Generate target
@@ -31,6 +35,7 @@ set(SOURCES
     )
 
 add_library(${PROJECT_NAME} SHARED ${SOURCES})
+target_link_libraries(${PROJECT_NAME} ${infuse_envire_LIBRARIES} ${urdfdom_LIBRARIES})
 
 
 ####
