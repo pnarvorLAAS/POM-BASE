@@ -35,6 +35,7 @@ set(SOURCES
 add_library(${PROJECT_NAME} SHARED ${SOURCES})
 target_link_libraries(${PROJECT_NAME} infuse_envire ${urdfdom_LIBRARIES})
 target_include_directories(${PROJECT_NAME} PUBLIC ${urdfdom_INCLUDE_DIR})
+target_include_directories(${PROJECT_NAME} PRIVATE include/)
 
 
 ####
