@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.0)
 # Set variables:
 #   * PROJECT_NAME
 #   * PROJECT_VERSION
-project(infuse_pom_base VERSION 0.1)
+project(infuse_pom_base VERSION 0.1.1)
 
 set(CMAKE_CXX_STANDARD 11)
 set(PKG_DESCRIPTION "Base classe for Infuse Position Manager (PoM)")
@@ -32,7 +32,7 @@ set(SOURCES
     )
 
 add_library(${PROJECT_NAME} SHARED ${SOURCES})
-target_link_libraries(${PROJECT_NAME} ${infuse_envire_LIBRARIES} ${urdfdom_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} infuse_envire ${urdfdom_LIBRARIES})
 
 
 ####
