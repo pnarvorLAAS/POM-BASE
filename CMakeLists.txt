@@ -12,20 +12,17 @@ set(PKG_DESCRIPTION "Base classe for Infuse Position Manager (PoM)")
 ###
 # Imports infuse_pom_base dependencies
 
-find_package(PkgConfig REQUIRED)
-
 find_package(urdfdom REQUIRED)
-pkg_check_modules(infuse_envire REQUIRED infuse_envire)
+find_package(infuse_envire REQUIRED)
 
 include_directories(
     include/
-    ${infuse_envire_INCLUDE_DIRS}
-    ${urdfdom_INCLUDE_DIRS}
+    ${infuse_envire_INCLUDE_DIR}
+    ${urdfdom_INCLUDE_DIR}
+    ${EIGEN3_INCLUDE_DIR} # This is necessary because Eigen3 is include inside infuse_envire
 )
-link_directories(${infuse_envire_LIBRARY_DIRS})
 
 set(REQUIRED_COMPONENTS "urdfdom, infuse_envire")
-
 
 ####
 # Generate target
