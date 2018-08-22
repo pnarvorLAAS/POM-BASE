@@ -15,12 +15,13 @@ set(PKG_DESCRIPTION "Base classe for Infuse Position Manager (PoM)")
 find_package(urdfdom REQUIRED)
 find_package(infuse_envire REQUIRED)
 
-include_directories(
-    include/
-    ${infuse_envire_INCLUDE_DIR}
-    ${urdfdom_INCLUDE_DIR}
-    ${EIGEN3_INCLUDE_DIR} # This is necessary because Eigen3 is include inside infuse_envire
-)
+set(LIBTOCHECK infuse_envire)
+get_property(${LIBTOCHECK}_link TARGET ${LIBTOCHECK} PROPERTY INTERFACE_LINK_LIBRARY_RELEASE)
+get_property(${LIBTOCHECK}_include TARGET ${LIBTOCHECK} PROPERTY INTERFACE_INCLUDE_DIRECTORIES)
+get_property(${LIBTOCHECK}_location TARGET ${LIBTOCHECK} PROPERTY IMPORTED_LOCATION_RELEASE)
+message(STATUS "${LIBTOCHECK}_link : ${${LIBTOCHECK}_link}")
+message(STATUS "${LIBTOCHECK}_include : ${${LIBTOCHECK}_include}")
+message(STATUS "${LIBTOCHECK}_location : ${${LIBTOCHECK}_location}")
 
 set(REQUIRED_COMPONENTS "urdfdom, infuse_envire")
 
@@ -33,6 +34,7 @@ set(SOURCES
 
 add_library(${PROJECT_NAME} SHARED ${SOURCES})
 target_link_libraries(${PROJECT_NAME} infuse_envire ${urdfdom_LIBRARIES})
+target_include_directories(${PROJECT_NAME} PUBLIC ${urdfdom_INCLUDE_DIR})
 
 
 ####
@@ -158,3 +160,4 @@ install(
     EXPORT "${TARGETS_EXPORT_NAME}"
     DESTINATION "${config_install_dir}"
 )
+
