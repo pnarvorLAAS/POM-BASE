@@ -12,9 +12,6 @@
 namespace PositionManager
 {
 
-typedef std::pair<PositionManager::FrameId, PositionManager::FrameId> Joint;
-typedef std::map<std::string, Joint> JointMap;
-
 class UrdfParser
 {
     public:
@@ -30,7 +27,7 @@ class UrdfParser
     std::list<PositionManager::FrameId> _frameIds;
     std::list<PositionManager::Pose> _poses;
 
-    JointMap _movableJoints;
+    std::map<PositionManager::PoseId,PositionManager::FrameIdPair> _movableJoints;
 
     protected:
 

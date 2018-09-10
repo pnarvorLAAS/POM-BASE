@@ -12,6 +12,7 @@ namespace PositionManager
 
 typedef envire::core::FrameId FrameId; //Is a std::string
 typedef envire::core::Transform Transform;
+typedef std::string PoseId;
 typedef base::Matrix6d Covariance;
 typedef long long TimeUs;
 
@@ -63,6 +64,22 @@ class TimeManager
         return std::string(str);
     }
 };
+
+struct FrameIdPair
+{
+    FrameIdPair(PositionManager::FrameId p = PositionManager::FrameId("parent"),
+                PositionManager::FrameId c = PositionManager::FrameId("child")) :
+        parent(p), child(c) {}
+
+    PositionManager::FrameId parent;
+    PositionManager::FrameId child;
+};
+
+PositionManager::PoseId getPoseId(const FrameId& parent, const FrameId& child)
+{
+    return parent + "To" + child;
+}
+
 
 class Pose 
 {
@@ -129,6 +146,11 @@ class Pose
                       << tr.transform.orientation.z() << ")"; 
 
         return oss.str();
+    }
+
+    PoseId getPoseId() const
+    {
+        return PositionManager::getPoseId(_parent,_child);
     }
 
     public:

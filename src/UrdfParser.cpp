@@ -87,7 +87,7 @@ int UrdfParser::parseURDF(string path)
 
         if(joint->second->type != urdf::Joint::FIXED)
         {
-            _movableJoints.insert(pair<string,Joint>(joint->second->name, Joint(joint->second->parent_link_name, joint->second->child_link_name)));
+            _movableJoints.insert(pair<PoseId,FrameIdPair>(joint->second->name, FrameIdPair(joint->second->parent_link_name, joint->second->child_link_name)));
             cout << "Added movable joint : " << joint->second->name << endl;
         }
         
