@@ -2,6 +2,144 @@
 
 using namespace PositionManager;
 
+
+/////////////////////////////////////////////////
+TimeUs TimeManager::now()
+{
+    timeval tv;
+    gettimeofday(&tv,NULL);
+
+    return USEC_PER_SEC*tv.tv_sec + tv.tv_usec;
+}
+
+std::string TimeManager::toString(TimeUs time)
+{
+    char str[512];
+    int i;
+    timeval tv;
+    struct tm timeinfo;
+    
+    tv.tv_sec = time / USEC_PER_SEC;
+    tv.tv_usec = time % USEC_PER_SEC;
+    
+    localtime_r(&tv.tv_sec, &timeinfo);
+    i = strftime(str, 512, "%F %T.", &timeinfo);
+    sprintf(str + i, "%6ld", tv.tv_usec);
+
+    return std::string(str);
+}
+
+std::string TimeManager::toStringShort(TimeUs time)
+{
+    char str[512];
+    int i;
+    timeval tv;
+    struct tm timeinfo;
+    
+    tv.tv_sec = time / USEC_PER_SEC;
+    tv.tv_usec = time % USEC_PER_SEC;
+    
+    localtime_r(&tv.tv_sec, &timeinfo);
+    i = strftime(str, 512, "%T.", &timeinfo);
+    sprintf(str + i, "%6ld", tv.tv_usec);
+
+    return std::string(str);
+}
+
+
+/////////////////////////////////////////////////
+FrameIdPair::FrameIdPair(FrameId p, FrameId c) :
+    parent(p), child(c)
+{}
+
+PoseId PositionManager::getPoseId(const FrameId& parent, const FrameId& child)
+{
+    return parent + "To" + child;
+}
+
+/////////////////////////////////////////////////
+Pose::Pose()
+{}
+
+Pose::Pose(const FrameId& parent, const FrameId& child, const Transform& tr) : 
+    _parent(parent),
+    _parentTime(-1),
+    _child(child),
+    _childTime(-1),
+    _tr(tr)
+{}
+
+Pose::Pose(const Pose& pose) : 
+    _parent(pose._parent),
+    _parentTime(pose._parentTime),
+    _child(pose._child),
+    _childTime(pose._childTime),
+    _tr(pose._tr)
+{}
+
+std::string Pose::toString() const
+{ 
+    return _parent + "->" + _child + "\n" + this->toStringShort(_tr);
+}
+
+std::string Pose::toStringVerboseShort() const
+{
+    std::ostringstream stream;
+    stream << _parent << " " << PositionManager::TimeManager::toStringShort(_parentTime) 
+           << "\n->\n"
+           << _child  << " " << PositionManager::TimeManager::toStringShort(_parentTime)
+           << "\n" << this->toStringShort(_tr);
+    return stream.str();
+}
+
+std::string Pose::toStringVerbose() const
+{
+    std::ostringstream stream;
+    stream << _parent <<" "<< PositionManager::TimeManager::toString(_parentTime)
+           << "\n->\n"
+           << _child  <<" "<< PositionManager::TimeManager::toString(_parentTime)
+           << "\n" << this->toString(_tr) << "\n" << _tr.transform.cov;
+
+    return stream.str();
+}
+
+std::string Pose::toString(const Transform& tr) const
+{
+    std::ostringstream oss;
+    oss << "t: (" << tr.transform.translation(0) << " " 
+                  << tr.transform.translation(1) << " " 
+                  << tr.transform.translation(2) << ")\n"
+        << "r: (" << tr.transform.orientation.w() << " " 
+                  << tr.transform.orientation.x() << " " 
+                  << tr.transform.orientation.y() << " " 
+                  << tr.transform.orientation.z() << ")"; 
+
+    return oss.str();
+}
+
+std::string Pose::toStringShort(const Transform& tr) const
+{
+    std::ostringstream oss;
+    oss.setf(std::ios::fixed, std::ios::floatfield);
+    oss.precision(2);
+    
+    oss << "t: (" << tr.transform.translation(0) << " " 
+                  << tr.transform.translation(1) << " " 
+                  << tr.transform.translation(2) << ")\n"
+        << "r: (" << tr.transform.orientation.w() << " " 
+                  << tr.transform.orientation.x() << " " 
+                  << tr.transform.orientation.y() << " " 
+                  << tr.transform.orientation.z() << ")"; 
+
+    return oss.str();
+}
+
+PoseId Pose::getPoseId() const
+{
+    return PositionManager::getPoseId(_parent,_child);
+}
+
+/////////////////////////////////////////////////
 Graph::Graph()
 {
 }
