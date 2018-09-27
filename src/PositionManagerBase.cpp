@@ -121,7 +121,7 @@ std::string Pose::toStringShort(const Transform& tr) const
 {
     std::ostringstream oss;
     oss.setf(std::ios::fixed, std::ios::floatfield);
-    oss.precision(2);
+    oss.precision(10);
     
     oss << "t: (" << tr.transform.translation(0) << " " 
                   << tr.transform.translation(1) << " " 
