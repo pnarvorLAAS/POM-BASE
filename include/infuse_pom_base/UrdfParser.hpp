@@ -27,7 +27,7 @@ class UrdfParser
     std::list<PositionManager::FrameId> _frameIds;
     std::list<PositionManager::Pose> _poses;
 
-    std::map<PositionManager::PoseId,PositionManager::FrameIdPair> _movableJoints;
+    std::list<PositionManager::FrameIdPair> _movableJoints;
 
     protected:
 

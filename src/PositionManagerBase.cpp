@@ -2,6 +2,46 @@
 
 using namespace PositionManager;
 
+Transform PositionManager::identityTransform()
+{
+    Transform res;
+    res.setIdentity();
+    res.time.microseconds = 0;
+
+    return res;
+}
+
+std::string PositionManager::toString(const Transform& tr)
+{
+    std::ostringstream oss;
+    oss << "time " << tr.time.microseconds << "\n"
+        << "t: (" << tr.transform.translation(0) << " " 
+                  << tr.transform.translation(1) << " " 
+                  << tr.transform.translation(2) << ")\n"
+        << "r: (" << tr.transform.orientation.w() << " " 
+                  << tr.transform.orientation.x() << " " 
+                  << tr.transform.orientation.y() << " " 
+                  << tr.transform.orientation.z() << ")"; 
+
+    return oss.str();
+}
+
+std::string PositionManager::toStringShort(const Transform& tr)
+{
+    std::ostringstream oss;
+    oss.setf(std::ios::fixed, std::ios::floatfield);
+    oss.precision(10);
+    
+    oss << "t: (" << tr.transform.translation(0) << " " 
+                  << tr.transform.translation(1) << " " 
+                  << tr.transform.translation(2) << ")\n"
+        << "r: (" << tr.transform.orientation.w() << " " 
+                  << tr.transform.orientation.x() << " " 
+                  << tr.transform.orientation.y() << " " 
+                  << tr.transform.orientation.z() << ")"; 
+
+    return oss.str();
+}
 
 /////////////////////////////////////////////////
 TimeUs TimeManager::now()
@@ -79,7 +119,7 @@ Pose::Pose(const Pose& pose) :
 
 std::string Pose::toString() const
 { 
-    return _parent + "->" + _child + "\n" + this->toStringShort(_tr);
+    return _parent + "->" + _child + "\n" + toStringShort(_tr);
 }
 
 std::string Pose::toStringVerboseShort() const
@@ -88,7 +128,7 @@ std::string Pose::toStringVerboseShort() const
     stream << _parent << " " << PositionManager::TimeManager::toStringShort(_parentTime) 
            << "\n->\n"
            << _child  << " " << PositionManager::TimeManager::toStringShort(_parentTime)
-           << "\n" << this->toStringShort(_tr);
+           << "\n" << toStringShort(_tr);
     return stream.str();
 }
 
@@ -98,40 +138,9 @@ std::string Pose::toStringVerbose() const
     stream << _parent <<" "<< PositionManager::TimeManager::toString(_parentTime)
            << "\n->\n"
            << _child  <<" "<< PositionManager::TimeManager::toString(_parentTime)
-           << "\n" << this->toString(_tr) << "\n" << _tr.transform.cov;
+           << "\n" << PositionManager::toString(_tr) << "\n" << _tr.transform.cov;
 
     return stream.str();
-}
-
-std::string Pose::toString(const Transform& tr) const
-{
-    std::ostringstream oss;
-    oss << "t: (" << tr.transform.translation(0) << " " 
-                  << tr.transform.translation(1) << " " 
-                  << tr.transform.translation(2) << ")\n"
-        << "r: (" << tr.transform.orientation.w() << " " 
-                  << tr.transform.orientation.x() << " " 
-                  << tr.transform.orientation.y() << " " 
-                  << tr.transform.orientation.z() << ")"; 
-
-    return oss.str();
-}
-
-std::string Pose::toStringShort(const Transform& tr) const
-{
-    std::ostringstream oss;
-    oss.setf(std::ios::fixed, std::ios::floatfield);
-    oss.precision(10);
-    
-    oss << "t: (" << tr.transform.translation(0) << " " 
-                  << tr.transform.translation(1) << " " 
-                  << tr.transform.translation(2) << ")\n"
-        << "r: (" << tr.transform.orientation.w() << " " 
-                  << tr.transform.orientation.x() << " " 
-                  << tr.transform.orientation.y() << " " 
-                  << tr.transform.orientation.z() << ")"; 
-
-    return oss.str();
 }
 
 PoseId Pose::getPoseId() const
