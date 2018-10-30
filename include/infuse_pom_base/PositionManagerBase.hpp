@@ -5,7 +5,11 @@
 #include <sys/time.h>
 #include <string>
 
-#include <infuse_envire/graph/EnvireGraph.hpp>
+#ifdef USE_ENVIRE_MINIMAL
+    #include <infuse_envire/graph/EnvireGraph.hpp>
+#else
+    #include <envire_core/graph/EnvireGraph.hpp>
+#endif
 
 namespace PositionManager
 {

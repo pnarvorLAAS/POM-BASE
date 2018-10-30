@@ -9,34 +9,83 @@ project(infuse_pom_base VERSION 0.1.2)
 set(CMAKE_CXX_STANDARD 11)
 set(PKG_DESCRIPTION "Base classe for Infuse Position Manager (PoM)")
 
-###
-# Imports infuse_pom_base dependencies
+option (USE_ENVIRE_MINIMAL "Compile with laas minimal envire version or the official one" FALSE)
 
-find_package(urdfdom REQUIRED)
-find_package(infuse_envire REQUIRED)
+if(USE_ENVIRE_MINIMAL)
 
-set(LIBTOCHECK infuse_envire)
-get_property(${LIBTOCHECK}_link TARGET ${LIBTOCHECK} PROPERTY INTERFACE_LINK_LIBRARY_RELEASE)
-get_property(${LIBTOCHECK}_include TARGET ${LIBTOCHECK} PROPERTY INTERFACE_INCLUDE_DIRECTORIES)
-get_property(${LIBTOCHECK}_location TARGET ${LIBTOCHECK} PROPERTY IMPORTED_LOCATION_RELEASE)
-message(STATUS "${LIBTOCHECK}_link : ${${LIBTOCHECK}_link}")
-message(STATUS "${LIBTOCHECK}_include : ${${LIBTOCHECK}_include}")
-message(STATUS "${LIBTOCHECK}_location : ${${LIBTOCHECK}_location}")
 
-set(REQUIRED_COMPONENTS "urdfdom, infuse_envire")
-
-####
-# Generate target
-set(SOURCES 
-    src/PositionManagerBase.cpp
-    src/UrdfParser.cpp
+    ###
+    # Imports infuse_pom_base dependencies
+    
+    find_package(urdfdom REQUIRED)
+    find_package(infuse_envire REQUIRED)
+    
+    set(LIBTOCHECK infuse_envire)
+    get_property(${LIBTOCHECK}_link TARGET ${LIBTOCHECK} PROPERTY INTERFACE_LINK_LIBRARY_RELEASE)
+    get_property(${LIBTOCHECK}_include TARGET ${LIBTOCHECK} PROPERTY INTERFACE_INCLUDE_DIRECTORIES)
+    get_property(${LIBTOCHECK}_location TARGET ${LIBTOCHECK} PROPERTY IMPORTED_LOCATION_RELEASE)
+    message(STATUS "${LIBTOCHECK}_link : ${${LIBTOCHECK}_link}")
+    message(STATUS "${LIBTOCHECK}_include : ${${LIBTOCHECK}_include}")
+    message(STATUS "${LIBTOCHECK}_location : ${${LIBTOCHECK}_location}")
+    
+    set(REQUIRED_COMPONENTS "urdfdom, infuse_envire")
+    
+    ####
+    # Generate target
+    set(SOURCES 
+        src/PositionManagerBase.cpp
+        src/UrdfParser.cpp
+        )
+    
+    add_library(${PROJECT_NAME} SHARED ${SOURCES})
+    target_link_libraries(${PROJECT_NAME} 
+        infuse_envire
+        ${urdfdom_LIBRARIES}
     )
+    target_include_directories(${PROJECT_NAME} PUBLIC
+        ${urdfdom_INCLUDE_DIRS}
+    )
+    target_include_directories(${PROJECT_NAME} PRIVATE include/)
 
-add_library(${PROJECT_NAME} SHARED ${SOURCES})
-target_link_libraries(${PROJECT_NAME} infuse_envire ${urdfdom_LIBRARIES})
-target_include_directories(${PROJECT_NAME} PUBLIC ${urdfdom_INCLUDE_DIRS})
-target_include_directories(${PROJECT_NAME} PRIVATE include/)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE USE_ENVIRE_MINIMAL)
 
+else()
+
+    ###
+    # Imports infuse_pom_base dependencies
+    
+    find_package(urdfdom REQUIRED)
+    find_package(envire_core REQUIRED)
+    
+    set(LIBTOCHECK envire_core)
+    get_property(${LIBTOCHECK}_link TARGET ${LIBTOCHECK} PROPERTY INTERFACE_LINK_LIBRARY_RELEASE)
+    get_property(${LIBTOCHECK}_include TARGET ${LIBTOCHECK} PROPERTY INTERFACE_INCLUDE_DIRECTORIES)
+    get_property(${LIBTOCHECK}_location TARGET ${LIBTOCHECK} PROPERTY IMPORTED_LOCATION_RELEASE)
+    message(STATUS "${LIBTOCHECK}_link : ${${LIBTOCHECK}_link}")
+    message(STATUS "${LIBTOCHECK}_include : ${${LIBTOCHECK}_include}")
+    message(STATUS "${LIBTOCHECK}_location : ${${LIBTOCHECK}_location}")
+    
+    set(REQUIRED_COMPONENTS "urdfdom, envire_core")
+    
+    ####
+    # Generate target
+    set(SOURCES 
+        src/PositionManagerBase.cpp
+        src/UrdfParser.cpp
+        )
+    
+    add_library(${PROJECT_NAME} SHARED ${SOURCES})
+    target_link_libraries(${PROJECT_NAME}
+        ${envire_core_LIBRARIES}
+        ${urdfdom_LIBRARIES}
+    )
+    target_include_directories(${PROJECT_NAME} PUBLIC
+        ${envire_core_INCLUDE_DIRS}
+        ${urdfdom_INCLUDE_DIRS}
+    )
+    target_include_directories(${PROJECT_NAME} PRIVATE include/)
+
+endif()
 
 ####
 # Set properties of target
