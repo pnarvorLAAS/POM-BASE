@@ -45,7 +45,9 @@ if(USE_ENVIRE_MINIMAL)
     target_include_directories(${PROJECT_NAME} PUBLIC
         ${urdfdom_INCLUDE_DIRS}
     )
-    target_include_directories(${PROJECT_NAME} PRIVATE include/)
+    target_include_directories(${PROJECT_NAME} PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/>
+    )
 
     target_compile_definitions(${PROJECT_NAME} PRIVATE USE_ENVIRE_MINIMAL)
 
@@ -92,7 +94,9 @@ else()
         ${urdfdom_INCLUDE_DIRS}
         ${EIGEN3_INCLUDE_DIR}
     )
-    target_include_directories(${PROJECT_NAME} PRIVATE include/)
+    target_include_directories(${PROJECT_NAME} PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/>
+    )
 
 endif()
 
