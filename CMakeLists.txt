@@ -53,19 +53,26 @@ else()
 
     ###
     # Imports infuse_pom_base dependencies
-    
+    list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake") 
     find_package(urdfdom REQUIRED)
     find_package(envire_core REQUIRED)
+
+    find_package(Eigen3 REQUIRED)
+    add_definitions(${EIGEN3_DEFINITIONS})
+
+    message(STATUS "Envire include dirs : ${ENVIRE_CORE_INCLUDE_DIRS}")
+    message(STATUS "Envire library dirs : ${ENVIRE_CORE_LIBRARY_DIRS}")
+    message(STATUS "Envire libraries    : ${ENVIRE_CORE_LIBRARIES}")
     
-    set(LIBTOCHECK envire_core)
-    get_property(${LIBTOCHECK}_link TARGET ${LIBTOCHECK} PROPERTY INTERFACE_LINK_LIBRARY_RELEASE)
-    get_property(${LIBTOCHECK}_include TARGET ${LIBTOCHECK} PROPERTY INTERFACE_INCLUDE_DIRECTORIES)
-    get_property(${LIBTOCHECK}_location TARGET ${LIBTOCHECK} PROPERTY IMPORTED_LOCATION_RELEASE)
-    message(STATUS "${LIBTOCHECK}_link : ${${LIBTOCHECK}_link}")
-    message(STATUS "${LIBTOCHECK}_include : ${${LIBTOCHECK}_include}")
-    message(STATUS "${LIBTOCHECK}_location : ${${LIBTOCHECK}_location}")
+    # set(LIBTOCHECK ENVIRE_CORE)
+    # get_property(${LIBTOCHECK}_link TARGET ${LIBTOCHECK} PROPERTY INTERFACE_LINK_LIBRARY_RELEASE)
+    # get_property(${LIBTOCHECK}_include TARGET ${LIBTOCHECK} PROPERTY INTERFACE_INCLUDE_DIRECTORIES)
+    # get_property(${LIBTOCHECK}_location TARGET ${LIBTOCHECK} PROPERTY IMPORTED_LOCATION_RELEASE)
+    # message(STATUS "${LIBTOCHECK}_link : ${${LIBTOCHECK}_link}")
+    # message(STATUS "${LIBTOCHECK}_include : ${${LIBTOCHECK}_include}")
+    # message(STATUS "${LIBTOCHECK}_location : ${${LIBTOCHECK}_location}")
     
-    set(REQUIRED_COMPONENTS "urdfdom, envire_core")
+    set(REQUIRED_COMPONENTS "urdfdom, envire_core, eigen3")
     
     ####
     # Generate target
@@ -78,10 +85,12 @@ else()
     target_link_libraries(${PROJECT_NAME}
         ${envire_core_LIBRARIES}
         ${urdfdom_LIBRARIES}
+        ${EIGEN3_LIBRARIES}
     )
     target_include_directories(${PROJECT_NAME} PUBLIC
         ${envire_core_INCLUDE_DIRS}
         ${urdfdom_INCLUDE_DIRS}
+        ${EIGEN3_INCLUDE_DIR}
     )
     target_include_directories(${PROJECT_NAME} PRIVATE include/)
 
