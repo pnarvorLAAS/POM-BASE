@@ -11,6 +11,8 @@ set(PKG_DESCRIPTION "Base classe for Infuse Position Manager (PoM)")
 
 option (USE_ENVIRE_MINIMAL "Compile with laas minimal envire version or the official one" FALSE)
 
+configure_file(config.h.in include/config.h)
+
 if(USE_ENVIRE_MINIMAL)
 
 
@@ -47,9 +49,9 @@ if(USE_ENVIRE_MINIMAL)
     )
     target_include_directories(${PROJECT_NAME} PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/>
+        $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include/>
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/include/>
     )
-
-    target_compile_definitions(${PROJECT_NAME} PRIVATE USE_ENVIRE_MINIMAL)
 
 else()
 
@@ -96,6 +98,8 @@ else()
     )
     target_include_directories(${PROJECT_NAME} PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/>
+	$<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include/>
+	$<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/include/>
     )
 
 endif()
@@ -207,6 +211,12 @@ install(
 install(
     FILES "${project_config}" "${version_config}"
     DESTINATION "${config_install_dir}"
+)
+
+# Config header
+install(
+    FILES "${CMAKE_BINARY_DIR}/include/config.h"
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}"
 )
 
 

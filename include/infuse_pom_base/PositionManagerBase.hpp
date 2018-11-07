@@ -5,6 +5,8 @@
 #include <sys/time.h>
 #include <string>
 
+#include "config.h"
+
 #ifdef USE_ENVIRE_MINIMAL
     #include <infuse_envire/graph/EnvireGraph.hpp>
 #else
