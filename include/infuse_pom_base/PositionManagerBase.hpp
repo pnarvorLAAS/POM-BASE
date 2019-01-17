@@ -69,6 +69,8 @@ class Pose
     FrameId _child;
     TimeUs _childTime;
     Transform _tr;
+    bool _dataEstimated[7];
+    std::string _producerId;
 };
 
 class Graph : public envire::core::EnvireGraph
