@@ -53,6 +53,11 @@ if(USE_ENVIRE_MINIMAL)
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/include/>
     )
 
+    target_compile_definitions(${PROJECT_NAME} PUBLIC USE_ENVIRE_MINIMAL)
+
+    set(USE_ENVIRE_MINIMAL_DEFINITION "-DUSE_ENVIRE_MINIMAL")
+    set(ENVIRE_TO_USE "infuse_envire")
+
 else()
 
     ###
@@ -101,6 +106,7 @@ else()
 	$<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include/>
 	$<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/include/>
     )
+    set(ENVIRE_TO_USE "envire_core")
 
 endif()
 

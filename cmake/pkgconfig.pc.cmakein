@@ -11,6 +11,6 @@ Version: @PROJECT_VERSION@
 Requires: @REQUIRED_COMPONENTS@
 Requires.private:
 Conflicts: 
-Cflags: -I${includedir}
+Cflags: -I${includedir} @USE_ENVIRE_MINIMAL_DEFINITION@
 Libs: -L${libdir} -L${sharedlibdir} -l@PROJECT_NAME@
 Libs.private: 
