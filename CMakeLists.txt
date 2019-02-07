@@ -66,6 +66,8 @@ else()
     find_package(urdfdom REQUIRED)
     find_package(envire_core REQUIRED)
 
+    message(STATUS "Envire include dirs : ${envire_core_INCLUDE_DIRS}")
+
     find_package(Eigen3 REQUIRED)
     add_definitions(${EIGEN3_DEFINITIONS})
 
@@ -92,7 +94,7 @@ else()
     
     add_library(${PROJECT_NAME} SHARED ${SOURCES})
     target_link_libraries(${PROJECT_NAME}
-        ${envire_core_LIBRARIES}
+        ${ENVIRE_CORE_LIBRARIES}
         ${urdfdom_LIBRARIES}
         ${EIGEN3_LIBRARIES}
     )
@@ -215,7 +217,7 @@ install(
 #   * <prefix>/lib/cmake/${PROJECT_NAME}/${PROJECT_NAME}Config.cmake
 #   * <prefix>/lib/cmake/${PROJECT_NAME}/${PROJECT_NAME}ConfigVersion.cmake
 install(
-    FILES "${project_config}" "${version_config}"
+    FILES "${project_config}" "${version_config}" "cmake/Findenvire_core.cmake"
     DESTINATION "${config_install_dir}"
 )
 
